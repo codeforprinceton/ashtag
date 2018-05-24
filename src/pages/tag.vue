@@ -46,7 +46,7 @@
 
 <script>
   import shortid from 'shortid'
-  import { fireb } from '../plugins/firebase'
+  import { fireb, geoFire } from '../plugins/firebase'
  // import { upload } from '../helpers/uploadService'
   import { Loading } from 'quasar'
   const STATUS_INITIAL = 0, STATUS_SAVING = 1, STATUS_SUCCESS = 2, STATUS_FAILED = 3
@@ -209,8 +209,12 @@
             console.log("Pushed to firebase")
             key = data.key
             console.log(key)
+            geoFire.set(key, [this.tree.loc.lat, this.tree.loc.lng])
           })
-          .catch(err => {
+          .then(() => {
+              console.log('key: ' + key + ' location has been added to geofire')
+          })
+          .catch((error) => {
             console.log(error)
             this.currentStatus = STATUS_FAILED
             // this.uploadError = err.response
