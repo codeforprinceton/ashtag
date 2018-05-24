@@ -48,7 +48,7 @@ export default {
         lng: 2.298
       },
       // userPosition: null,
-      zoom: 12
+      zoom: 15
     }
   },
   computed: {

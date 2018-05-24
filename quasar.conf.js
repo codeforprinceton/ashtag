@@ -62,7 +62,6 @@ module.exports = function (ctx) {
         'QTabPane',
         'QRouteTab',
         'QPageSticky',
-        'Loading',
         'QAlert'
       ],
       directives: [
@@ -71,7 +70,12 @@ module.exports = function (ctx) {
       ],
       // Quasar plugins
       plugins: [
-        'Notify'
+        'Notify',
+        'Loading'
+       /* 'axios',
+        'firebase',
+        'vuegooglemaps',
+        'date-filter'*/
       ]
     },
     // animations: 'all' --- includes all animations

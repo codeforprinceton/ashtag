@@ -11,7 +11,7 @@
 </template>
 
 <script>
-  import { fireb, auth } from '../plugins/firebase'
+  //import { fireb, auth, fireui } from '../plugins/firebase'
   //import firebase from 'firebase'
   import firebaseui from 'firebaseui'
   export default {
@@ -24,19 +24,20 @@
               var credential = authResult.credential;
               console.log("user: " + user);
               this.sendToStore(user);
+              alert("Login successful");
               return true;
-            }.bind(this),
-            uiShown: function() {
-              alert("Trying sign in");
-            }
+            }.bind(this)
+           // uiShown: function() {
+           //   //alert("Trying sign in");
+           // }
           },
           signInSuccessUrl: 'http://localhost:8080/hello',
           signInOptions: [
-            fireb.auth.GoogleAuthProvider.PROVIDER_ID,
-            fireb.auth.EmailAuthProvider.PROVIDER_ID
+            this.$firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+            this.$firebase.auth.EmailAuthProvider.PROVIDER_ID
           ]
         }
-        var ui = new firebaseui.auth.AuthUI(auth)
+        var ui = new firebaseui.auth.AuthUI(this.$auth)
         ui.start('#firebaseui-auth-container', uiConfig)
       },
       methods : {

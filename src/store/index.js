@@ -1,8 +1,9 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 //import firebase from 'firebase'
+import { fireb } from '../plugins/firebase'
 
-import example from './module-example'
+//import example from './module-example'
 
 Vue.use(Vuex)
 
@@ -42,7 +43,7 @@ const actions = {
   setUser (context, user) {
     context.commit('SET_USER', user)
     if (user) {
-      firebase.database().ref('user_profiles').orderByChild('user_email')
+      fireb.database().ref('user_profiles').orderByChild('user_email')
         .equalTo(user.email)
         .once('value')
         .then(function (snapshot) {
@@ -53,7 +54,7 @@ const actions = {
           else {
             // If first time login, create Profile in Firebase
             const p = { user_email: user.email, points: 0, user_name: user.displayName }
-            firebase.database().ref('user_profiles').child(user.uid).set(p).then(context.commit('SET_PROFILE', p))
+            fireb.database().ref('user_profiles').child(user.uid).set(p).then(context.commit('SET_PROFILE', p))
           }
         })
     }

@@ -7,7 +7,7 @@
         Not sure if it's an ash? <br/><router-link to="/identification">Check out our help page</router-link>.</p>
       <img id="img" ref="treeImg" :src="src || '/statics/tree-example.jpg'" width="250px"/>
       <div v-if="isFailed">
-        <h2>Uploaded failed. Try again?</h2>
+        <h2>Upload failed. Try again?</h2>
         <p>
           <q-btn @click="reset" id="tryAgain" round color="secondary" icon="refresh" style="cursor:pointer;" size="lg"/>
         </p>
@@ -19,9 +19,12 @@
             <div v-if="treePic">
               <q-btn @click="uploadPhotos" id="upload" round color="positive" icon="backup" style="cursor:pointer;" size="lg"/>
             </div>
-            <label v-else for="tree">
+            <div v-if="tree">
               <q-btn @click="triggerFileInput" round color="secondary" icon="add_a_photo" style="cursor:pointer;" size="lg"/>
-            </label>
+            </div>
+            <!--<label v-else for="tree">
+              <q-btn @click="triggerFileInput" round color="secondary" icon="add_a_photo" style="cursor:pointer;" size="lg"/>
+            </label>-->
           </q-page-sticky>
           <q-page-sticky v-if="treePic" position="bottom-left" :offset="[18, 18]">
             <q-btn @click="reset" round color="negative" icon="cancel" style="cursor:pointer;" size="lg"/>
@@ -30,6 +33,9 @@
         <div v-else>
           <q-page-sticky position="bottom-right" :offset="[18, 18]">
             <q-btn @click="reset" id="success" round color="positive" icon="check" style="cursor:pointer;" size="lg"/>
+          </q-page-sticky>
+          <q-page-sticky position="bottom-left" :offset="[18, 18]">
+            <q-btn @click="updateProfilePoints" id="filesaved" round color="positive" icon="thumb_up" style="cursor:pointer;" size="lg"/>
           </q-page-sticky>
         </div>
       </q-layout>
@@ -40,14 +46,16 @@
 
 <script>
   import shortid from 'shortid'
-  import { upload } from '../helpers/uploadService'
+  import { fireb } from '../plugins/firebase'
+ // import { upload } from '../helpers/uploadService'
+  import { Loading } from 'quasar'
   const STATUS_INITIAL = 0, STATUS_SAVING = 1, STATUS_SUCCESS = 2, STATUS_FAILED = 3
   export default {
     name: 'tag',
     data () {
       return {
-        treesRef: this.$root.$firebaseRefs.trees,
-        profilesRef: this.$root.$firebaseRefs.profiles,
+       // treesRef: treesRef,
+       // profilesRef: this.$root.$firebaseRefs.profiles,
         file: null,
         src: '',
         uploadFieldName: 'file',
@@ -65,7 +73,9 @@
         },
         uploadError: null,
         currentStatus: null,
-        img_name: ''
+        img_name: '',
+        blobFile: null,
+        blob: null
       }
     },
     computed: {
@@ -85,7 +95,7 @@
         return this.currentStatus === STATUS_FAILED
       },
       user_id () {
-        return this.$store.state.user.uid
+        return this.$store.state.user.uid || 8976
       },
       user_email () {
         return this.$store.state.user.email
@@ -129,7 +139,7 @@
             cvs.width = this.width
             cvs.height = this.height
             ctx.drawImage(img, 0, 0)
-            // /* eslint-disable no-unused-vars */
+            // /!* eslint-disable no-unused-vars *!/
             let newImageData = cvs.toDataURL('image/jpeg', 0.5)
             window.img = newImageData
             if (newImageData.indexOf('image/jpeg') < 0) {
@@ -153,17 +163,18 @@
           spinnerColor: 'white'
         })
 
-        var blobFile
+        //var blobFile
         if (this.isSafari) {
-          blobFile = this.treePic
+          this.blob = this.treePic
+          this.blobFile = this.treePic
         }
         else {
           var base64ImageContent = this.treePic.replace(/^data:image\/(png|jpeg);base64,/, '')
-          var blob = this.base64ToBlob(base64ImageContent, 'image/jpeg')
-          blobFile = new File([blob], this.img_name)
+          this.blob = this.base64ToBlob(base64ImageContent, 'image/jpeg')
+          this.blobFile = new File([this.blob], this.img_name)
         }
-        this.formData.append('key', blobFile.name)
-        this.formData.append('file', blobFile)
+        this.formData.append('key', this.blobFile.name)
+        this.formData.append('file', this.blobFile)
         this.getPreciseLocation()
           .then(this.setTreeData)
           .catch((err) => {
@@ -171,33 +182,87 @@
             Loading.hide()
             console.error(err.message)
           })
+        this.updateProfilePoints
       },
       save (formData) {
         // upload data to the server
+        let key
+        let imageUrl
+       // let blob
         this.currentStatus = STATUS_SAVING
 
-        upload(formData)
+        this.uploadaws(formData)
           .then(x => {
             Loading.hide()
-            this.currentStatus = STATUS_SUCCESS
+            //this.currentStatus = STATUS_SUCCESS
+            console.log("Loaded AWS - About to upload firebase")
             // save data to database
-            this.treesRef.push(this.tree).then(this.updateProfilePoints)
-          })
+           })
           .catch(err => {
             Loading.hide()
-            this.uploadError = err.response
+            console.log(error)
+            //  this.uploadError = err.response
             this.currentStatus = STATUS_FAILED
           })
+        this.$treesRef.push(this.tree)
+          .then((data) => {
+            console.log("Pushed to firebase")
+            key = data.key
+            console.log(key)
+          })
+          .catch(err => {
+            console.log(error)
+            this.currentStatus = STATUS_FAILED
+            // this.uploadError = err.response
+          })
+
+        const storageRef = fireb.storage().ref('tree_photos/'+ this.img_name)
+        const uploadTask = storageRef.put(this.blob)
+       /* uploadTask.on('state_changed', function progress(snapshot) {
+          console.log(snapshot.totalBytesTransferred); // progress of upload
+          })*/
+        uploadTask.then((snapshot) => {
+            return snapshot.ref.getDownloadURL();   // Will return a promise with the download link
+          })
+          .then(downloadURL => {
+            console.log(`Successfully uploaded file and got download link - ${downloadURL}`);
+            //return downloadURL;
+            return this.$treesRef.child(key).update({imageUrl: downloadURL})
+          })
+          .then(() => {
+            console.log("downloadURL added to tree_photo in database")
+            this.currentStatus = STATUS_SUCCESS
+          })
+          .catch(err => {
+            console.log(error)
+            this.currentStatus = STATUS_FAILED
+           // this.uploadError = err.response
+          })
+       // this.updateProfilePoints
       },
+      uploadaws(formData) {
+        const url = 'https://s3.amazonaws.com/ash-tree-photos'
+        return this.$axios.post(url, formData)
+          .then(function (response) {
+            console.log("Loaded AWS")  //response.data
+          })
+          .catch(function (error) {
+            console.log(error + Date.now())
+          })
+      },
+
       triggerFileInput () {
         this.$refs.fileInput.click()
       },
       updateProfilePoints () {
-        var p = Object.assign({}, this.profile)
+        console.log("about to go to success page")
+        const p = Object.assign({}, this.profile)
         p.points = p.points + this.tagPoints
         // add userPoints in firebase
-        this.profilesRef.child(this.tree.user_id).update({points: p.points})
-          .then(this.$store.dispatch('setProfile', p))
+
+       // this.profilesRef.child(this.tree.user_id).update({points: p.points})
+       //   .then(this.$store.dispatch('setProfile', p))
+        console.log("going to success page")
         this.$router.push('/success')
       },
       getPreciseLocation () {
