@@ -8,8 +8,8 @@ import { fireb } from '../plugins/firebase'
 Vue.use(Vuex)
 
 const initialState = {
-  user: {displayName: 'Joel', email: 'joel@edu.org'},
-  lastPOI: {lat: 40.34923, lng: -74.65955},
+  user: {}, // {displayName: 'Joel', email: 'joel@edu.org'},
+  lastPOI: {}, // {lat: 40.34923, lng: -74.65955},
   profile: {},
   simplePoints: 10,
   tagPoints: 50,
@@ -17,11 +17,22 @@ const initialState = {
   userTagList: {}
 }
 
-const state = Object.assign({}, initialState)
+//const state = Object.assign({}, initialState)
+
+const state = {
+  user: {},
+  lastPOI: {},
+  profile: {},
+  simplePoints: 10,
+  tagPoints: 50,
+  flagToSpamThreshold: 1,
+  userTagList: {}
+}
 
 const mutations = {
   SET_USER (state, user) {
     state.user = user
+    console.log("Mutation User: " + user.displayName)
   },
   SET_PROFILE (state, profile) {
     state.profile = profile
@@ -41,6 +52,7 @@ const mutations = {
 
 const actions = {
   setUser (context, user) {
+    console.log("SetUser Action :" + user.displayName)
     context.commit('SET_USER', user)
     if (user) {
       fireb.database().ref('user_profiles').orderByChild('user_email')

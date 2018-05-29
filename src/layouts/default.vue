@@ -17,7 +17,7 @@
         <q-toolbar-title>
          Ashtag
         </q-toolbar-title>
-        <q-btn
+        <q-btn v-if="user"
           flat
           dense
           round
@@ -38,7 +38,7 @@
               <q-item v-close-overlay @click="help">
                 Help
               </q-item>
-              <q-item v-close-overlay @click="logOut()">
+              <q-item v-close-overlay @click="logOut">
                 Logout
               </q-item>
             </q-list>
@@ -71,17 +71,18 @@ export default {
   },
   methods: {
     logOut() {
-        auth.signOut().then(() => {
+        auth.logout()
+       // auth.signOut().then(() => {
         // Sign-out successful.
-          console.log("I logged out");
+        console.log("I logged out")
+        this.$store.dispatch('resetState', this.$store.state)
        // window.location.reload()
-      })
-      .catch(function(error) {
-        console.log(error)
-        window.location.reload()
-      });
-      // auth.logout()
-      this.$store.dispatch('resetState', this.$store.state)
+       /* })
+        .catch(function(error) {
+          console.log(error)
+          //window.location.reload()
+        });*/
+        // auth.logout()
     },
     help() {
       this.$router.push('/identification')
@@ -113,7 +114,7 @@ export default {
   header
     margin 0
     height 10px
-    background-color $tertiary
+    background-color $primary
 
   .bg-primary
     background-color $primary

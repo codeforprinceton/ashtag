@@ -1,21 +1,23 @@
 <template>
-  <div class="hello">
-    <img src="~assets/ashtag-logo-full.svg" alt="Ashtag" style="padding:20px;width:150px">
-    <h5>Ash trees are in danger!</h5>
-    <p>Can you help us find them all so we can stop the spread of a
-      deadly beetle infestation?</p>
-    <p>Welcome, {{name}}!</p>
-    <router-link class='btn' to="/tag">
-      <q-btn color="secondary">
-        Tag an ash tree
-      </q-btn>
-    </router-link>
-    <router-link class='btn' to="/istree">
-      <q-btn color="secondary" align="center">
-        Verify others' photos
-      </q-btn>
-    </router-link>
-  </div>
+  <q-page padding>
+    <div class="hello">
+      <img src="~assets/ashtag-logo-full.svg" alt="Ashtag" style="padding:20px;width:150px">
+      <h3>Ash trees are in danger!</h3>
+      <p>Can you help us find them all so we can stop the spread of a
+        deadly beetle infestation?</p>
+      <p>Welcome, {{name}}!</p>
+      <router-link class='btn' to="/tag">
+        <q-btn color="secondary">
+          Tag an ash tree
+        </q-btn>
+      </router-link>
+      <router-link class='btn' to="/istree">
+        <q-btn color="secondary" align="center">
+          Verify others' photos
+        </q-btn>
+      </router-link>
+    </div>
+  </q-page>
 </template>
 
 <script>
@@ -30,7 +32,7 @@
         user: {}
       }
     },
-    beforeMount: function () {
+    created() {
       if (this.$store.state.user) {
         this.user = this.$store.state.user
         this.name = this.$store.state.user.displayName
@@ -55,7 +57,7 @@
       color #35495E
   p
     display flex
-    align-content
+    align-content center
     justify-content center
   ul
     list-style-type none

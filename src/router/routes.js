@@ -4,7 +4,7 @@ export default [
     path: '/',
     component: () => import('layouts/default'),
     children: [
-      { path: '', component: () => import('pages/login') },
+      { path: '/', component: () => import('pages/login') },
       { path: '/login', component: () => import('pages/login') },
       { path: '/hello', component: () => import('pages/hello')}, //, meta: {
           //requiresAuth: true }},

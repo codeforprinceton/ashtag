@@ -1,13 +1,14 @@
 <template>
-  <div class="hello">
-    <img src="~assets/ashtag-logo-full.svg" alt="Ashtag" style="padding:20px;width:150px">
-    <h5>Ash trees are in danger!</h5>
-    <p>Can you help us find them all so we can stop the spread of a
-      deadly beetle infestation?</p>
-    <p>Please login using one of your existing online identities to get started:</p>
-    <div id="firebaseui-auth-container"></div>
-  </div>
-
+  <q-page padding>
+      <div class="hello">
+        <img src="~assets/ashtag-logo-full.svg" alt="Ashtag" style="padding:20px;width:150px">
+        <h5>Ash trees are in danger!</h5>
+        <p>Can you help us find them all so we can stop the spread of a
+          deadly beetle infestation?</p>
+        <p>Please login using one of your existing online identities to get started:</p>
+        <div id="firebaseui-auth-container"></div>
+      </div>
+  </q-page>
 </template>
 
 <script>
@@ -22,13 +23,13 @@
             signInSuccessWithAuthResult: function (authResult, redirectUrl) {
               var user = authResult.user;
               var credential = authResult.credential;
-              console.log("user: " + user);
+              console.log("user: " + user.displayName);
               this.sendToStore(user);
-              alert("Login successful");
+              alert("Logging in");
               return true;
             }.bind(this)
            // uiShown: function() {
-           //   //alert("Trying sign in");
+           //   //alert("Trying to sign in");
            // }
           },
           signInSuccessUrl: 'http://localhost:8080/hello',
@@ -40,9 +41,9 @@
         var ui = new firebaseui.auth.AuthUI(this.$auth)
         ui.start('#firebaseui-auth-container', uiConfig)
       },
-      methods : {
-          sendToStore(user)  {
-            this.$store.commit('setUser', user);
+      methods: {
+          sendToStore(user) {
+            this.$store.dispatch('setUser', user); //|| false)
           }
       }
   }
