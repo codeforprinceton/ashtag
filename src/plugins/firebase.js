@@ -3,6 +3,7 @@ import * as firebase from 'firebase';
 //import * as firebaseui from 'firebaseui';
 import * as GeoFire from 'geofire';
 import VueFire from 'vuefire';
+import store from '../store/index'
 
 const app = {
   apiKey: "AIzaSyCZTIICdE_LL7xA7nHJ_81uUHYv7g6DjkA",
@@ -34,4 +35,5 @@ export default ({ app, router, Vue }) => {
    Vue.prototype.$storefb = storefb.ref()
    Vue.prototype.$db = db
   // Vue.use(VueFire)
+
 }

@@ -6,8 +6,8 @@ export default [
     children: [
       { path: '/', component: () => import('pages/login') },
       { path: '/login', component: () => import('pages/login') },
-      { path: '/hello', component: () => import('pages/hello')}, //, meta: {
-          //requiresAuth: true }},
+      { path: '/hello', component: () => import('pages/hello')}, // , meta: {
+         // requiresAuth: true }},
       { path: '/tag', component: () => import('pages/tag'), meta: {
           requiresAuth: true }},
       { path: '/identification', component: () => import('pages/Identification'),  meta: {

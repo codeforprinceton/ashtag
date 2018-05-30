@@ -13,8 +13,8 @@
           detail="You just got points for your tag."
           appear
           :actions="[
-          { label: 'Tag Another', icon: 'alarm', handler: () => { window.history.go(-1) } },
-          { label: 'Verify Photos', icon: 'done', handler: () => {  window.location.replace('/#/istree') } }
+          { label: 'Tag Another', icon: 'alarm', handler: () => { window.location = '#/tag' } },
+          { label: 'Verify Photos', icon: 'done', handler: () => { window.location = '#/hello' } }
         ]"
           class="q-mt-md"
         >
@@ -43,12 +43,13 @@ export default {
   data () {
     return {
       tagPoints: this.$store.state.tagPoints,
-      center: {
+      center: this.userPosition,
+     /* {
         lat: 48.853,
         lng: 2.298
-      },
+      },*/
       // userPosition: null,
-      zoom: 15
+      zoom: 17
     }
   },
   computed: {

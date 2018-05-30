@@ -1,7 +1,7 @@
 <template>
   <q-page padding>
     <div class="tag">
-      <h1>Take a picture of an ash tree</h1>
+      <h3>Take a picture of an ash tree</h3>
       <p v-if="treePic">Looking good! <br/> Upload or cancel using the buttons below.</p>
       <p v-else>Stay close to the tree, but capture the full shape as shown below.
         Not sure if it's an ash? <br/><router-link to="/identification">Check out our help page</router-link>.</p>
@@ -182,7 +182,7 @@
             Loading.hide()
             console.error(err.message)
           })
-        this.updateProfilePoints
+        //this.updateProfilePoints
       },
       save (formData) {
         // upload data to the server
@@ -234,15 +234,16 @@
             return this.$treesRef.child(key).update({imageUrl: downloadURL})
           })
           .then(() => {
+            //this.updateProfilePoints
             console.log("downloadURL added to tree_photo in database")
             this.currentStatus = STATUS_SUCCESS
+            this.updateProfilePoints()
           })
           .catch(err => {
             console.log(error)
             this.currentStatus = STATUS_FAILED
            // this.uploadError = err.response
           })
-       // this.updateProfilePoints
       },
       uploadaws(formData) {
         const url = 'https://s3.amazonaws.com/ash-tree-photos'

@@ -57,8 +57,7 @@
 </template>
 
 <script>
-// import firebase from 'firebase'
-import { auth } from '../plugins/firebase'
+//import { auth } from '../plugins/firebase'
 export default {
   name: 'LayoutDefault',
   data() {
@@ -71,18 +70,10 @@ export default {
   },
   methods: {
     logOut() {
-        auth.logout()
-       // auth.signOut().then(() => {
-        // Sign-out successful.
+        this.$store.dispatch('logout')
         console.log("I logged out")
-        this.$store.dispatch('resetState', this.$store.state)
-       // window.location.reload()
-       /* })
-        .catch(function(error) {
-          console.log(error)
-          //window.location.reload()
-        });*/
-        // auth.logout()
+        //this.$store.dispatch('resetState', this.$store.state)
+        window.location.reload()
     },
     help() {
       this.$router.push('/identification')

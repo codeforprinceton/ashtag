@@ -5,7 +5,7 @@
       <h3>Ash trees are in danger!</h3>
       <p>Can you help us find them all so we can stop the spread of a
         deadly beetle infestation?</p>
-      <p>Welcome, {{name}}!</p>
+      <p>Welcome, {{ user.displayName }}!</p>
       <router-link class='btn' to="/tag">
         <q-btn color="secondary">
           Tag an ash tree
@@ -28,19 +28,25 @@
         photo: '',
         userId: '',
         name: '',
-        email: '',
-        user: {}
+        email: ''
+        //user: {}
       }
     },
-    created() {
+    computed: {
+      user() {
+        return this.$store.getters.getUser
+        console.log("hello: ")
+      }
+    }
+    /*created() {
       if (this.$store.state.user) {
         this.user = this.$store.state.user
         this.name = this.$store.state.user.displayName
         this.email = this.$store.state.user.email
        // this.photo = this.$store.state.user.photoURL
-       // this.userId = this.$store.state.user.uid
+        this.userId = this.$store.state.user.uid
       }
-    }
+    }*/
   }
 </script>
 
