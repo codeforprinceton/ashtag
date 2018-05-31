@@ -62,7 +62,7 @@ const actions = {
         .then(function (snapshot) {
           var value = snapshot.val()
           if (value) {
-            context.commit('SET_PROFILE', value[user.uid])
+            commit('SET_PROFILE', value[user.uid])
           }
           else {
             // If first time login, create Profile in Firebase

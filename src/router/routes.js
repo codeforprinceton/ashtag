@@ -12,8 +12,9 @@ export default [
           requiresAuth: true }},
       { path: '/identification', component: () => import('pages/Identification'),  meta: {
           requiresAuth: true }},
-      { path: '/success', component: () => import('pages/success')} //,  meta: {
+      { path: '/success', component: () => import('pages/success')}, //,  meta: {
           //requiresAuth: true }}
+      { path: '/nearbyTrees', component: () => import('pages/nearbyTrees') }
     ]
   },
 
