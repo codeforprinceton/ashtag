@@ -17,22 +17,22 @@ const initialState = {
   userTagList: {}
 }
 
-//const state = Object.assign({}, initialState)
+const state = Object.assign({}, initialState)
 
-const state = {
-  user: {},
-  lastPOI: {},
-  profile: {},
-  simplePoints: 10,
-  tagPoints: 50,
-  flagToSpamThreshold: 1,
-  userTagList: {}
-}
+// const state = {
+//   user: {},
+//   lastPOI: {},
+//   profile: {},
+//   simplePoints: 10,
+//   tagPoints: 50,
+//   flagToSpamThreshold: 1,
+//   userTagList: {}
+// }
 
 const mutations = {
   SET_USER (state, user) {
     state.user = user
-    console.log("Mutation User: " + user.displayName)
+    console.log("Mutation User: " + state.user.displayName)
   },
   SET_PROFILE (state, profile) {
     state.profile = profile
@@ -100,6 +100,3 @@ const store = new Vuex.Store({
 })
 
 export default store
-
-
-

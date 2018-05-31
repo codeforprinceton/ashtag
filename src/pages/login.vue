@@ -32,7 +32,7 @@
            //   //alert("Trying to sign in");
            // }
           },
-          signInSuccessUrl: 'http://localhost:8080/hello',
+          // signInSuccessUrl: '/hello',
           signInOptions: [
             this.$firebase.auth.GoogleAuthProvider.PROVIDER_ID,
             this.$firebase.auth.EmailAuthProvider.PROVIDER_ID
@@ -43,7 +43,9 @@
       },
       methods: {
           sendToStore(user) {
+            console.log(user)
             this.$store.dispatch('setUser', user); //|| false)
+            this.$router.push('/hello')
           }
       }
   }
