@@ -12,9 +12,8 @@
 </template>
 
 <script>
-  //import { fireb, auth, fireui } from '../plugins/firebase'
-  //import firebase from 'firebase'
   import firebaseui from 'firebaseui'
+  import firebaseUiAuthCss from 'firebaseui/dist/firebaseui.css' /* eslint no-unused-vars: 0 */
   export default {
       name: "login",
       mounted () {
