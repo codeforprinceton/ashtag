@@ -24,14 +24,9 @@
               var credential = authResult.credential;
               console.log("user: " + user.displayName);
               this.sendToStore(user);
-              alert("Signing in");
               return true;
             }.bind(this)
-           // uiShown: function() {
-           //   //alert("Trying to sign in");
-           // }
           },
-          //signInSuccessUrl: '/hello',
           signInOptions: [
             this.$firebase.auth.GoogleAuthProvider.PROVIDER_ID,
             this.$firebase.auth.EmailAuthProvider.PROVIDER_ID
