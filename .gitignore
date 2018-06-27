@@ -9,6 +9,8 @@ node_modules
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+src/helpers/firebaseConfig.js
+src/helpers/googleMapsConfig.js
 
 # Editor directories and files
 .idea

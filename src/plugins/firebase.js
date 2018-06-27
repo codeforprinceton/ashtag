@@ -4,16 +4,9 @@ import * as firebase from 'firebase';
 import * as GeoFire from 'geofire';
 import VueFire from 'vuefire';
 import store from '../store/index'
+import {config} from '../helpers/firebaseConfig'
 
-const app = {
-  apiKey: "AIzaSyCZTIICdE_LL7xA7nHJ_81uUHYv7g6DjkA",
-  authDomain: "tree-photos.firebaseapp.com",
-  databaseURL: "https://tree-photos.firebaseio.com",
-  projectId: "tree-photos",
-  storageBucket: "gs://tree-photos.appspot.com",
-  messagingSenderId: "24380484990"
-};
-firebase.initializeApp(app);
+firebase.initializeApp(config)
 
 export const fireb = firebase
 //export const fireui = firebaseui
