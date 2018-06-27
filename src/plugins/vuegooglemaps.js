@@ -1,9 +1,10 @@
 import * as VueGoogleMaps from 'vue2-google-maps'
+import {gmConfig} from '../helpers/googleMapsConfig'
 
 export default ({ Vue }) => {
   Vue.use(VueGoogleMaps, {
     load: {
-      key: 'AIzaSyC6Mxo0j7utiBOS9eW5qCvXQgPXHgJNIYI',
+      key: gmConfig.apiKey,
       libraries: 'places' // necessary for places input
     }
   })
