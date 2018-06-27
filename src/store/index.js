@@ -17,17 +17,7 @@ const initialState = {
   userTagList: {}
 }
 
-//const state = Object.assign({}, initialState)
-
-const state = {
-  user: {displayName: 'Joel', email: 'joel@edu.org'},
-  lastPOI: {},  // {lat: 40.34923, lng: -74.65955},
-  profile: {},
-  simplePoints: 10,
-  tagPoints: 50,
-  flagToSpamThreshold: 1,
-  userTagList: {}
-}
+const state = Object.assign({}, initialState)
 
 const mutations = {
   SET_USER (state, user) {
@@ -83,12 +73,7 @@ const actions = {
     commit('SET_POI', poi)
   },
   resetState ({commit}) {
-    commit('RESET_STATE')  //, state)
-  },
-  logout ({commit}) {
-    fireb.auth().signOut()
-    commit('SET_USER', null)
-    commit('RESET_STATE')
+    commit('RESET_STATE', state)
   },
 }
 
@@ -106,6 +91,3 @@ const store = new Vuex.Store({
 })
 
 export default store
-
-
-

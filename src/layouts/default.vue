@@ -19,26 +19,26 @@
         </q-toolbar-title>
         <q-btn v-if="user"
           flat
-          dense
-          round
           @click="goLeaderBoard"
         >
           <q-icon name="grade" />
         </q-btn>
 
-        <q-btn v-if="user">
+        <q-btn v-if="user"
+          flat
+        >
           <!-- Direct child of target -->
           <q-popover>
 
             <q-list separator link>
               <!-- notice `v-close-overlay` which closes popover -->
-              <q-item v-close-overlay @click="profile">
+              <q-item v-close-overlay @click.native="profile">
                   Profile
               </q-item>
-              <q-item v-close-overlay @click="help">
+              <q-item v-close-overlay @click.native="help">
                 Help
               </q-item>
-              <q-item v-close-overlay @click="logOut">
+              <q-item v-close-overlay @click.native="logOut">
                 Logout
               </q-item>
             </q-list>
@@ -58,6 +58,7 @@
 
 <script>
 //import { auth } from '../plugins/firebase'
+import auth from '../helpers/auth'
 export default {
   name: 'LayoutDefault',
   data() {
@@ -70,10 +71,12 @@ export default {
   },
   methods: {
     logOut() {
-        this.$store.dispatch('logout')
+        // this.$store.dispatch('logout')
+        auth.logout()
+        this.$store.dispatch('resetState', this.$store.state)
         console.log("I logged out")
-        //this.$store.dispatch('resetState', this.$store.state)
-        window.location.reload()
+        // this.$store.dispatch('resetState', this.$store.state)
+        // window.location.reload()
     },
     help() {
       this.$router.push('/identification')
