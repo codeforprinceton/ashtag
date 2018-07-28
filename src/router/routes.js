@@ -2,19 +2,21 @@
 export default [
   {
     path: '/',
-    component: () => import('layouts/default'),
+    component: () => import('layouts/Default'),
     children: [
-      { path: '/', component: () => import('pages/login') },
-      { path: '/login', component: () => import('pages/login') },
-      { path: '/hello', component: () => import('pages/hello'), meta: {
+      { path: '/', component: () => import('pages/Login') },
+      { path: '/login', component: () => import('pages/Login') },
+      { path: '/hello', component: () => import('pages/Hello'), meta: {
           requiresAuth: true }},
-      { path: '/tag', component: () => import('pages/tag'), meta: {
+      { path: '/tag', component: () => import('pages/Tag'), meta: {
           requiresAuth: true }},
       { path: '/identification', component: () => import('pages/Identification'),  meta: {
           requiresAuth: true }},
-      { path: '/success', component: () => import('pages/success'),  meta: {
+      { path: '/profile', component: () => import('pages/Profile'),  meta: {
           requiresAuth: true }},
-      { path: '/nearbyTrees', component: () => import('pages/nearbyTrees') }
+      { path: '/success', component: () => import('pages/Success'),  meta: {
+          requiresAuth: true }},
+      { path: '/nearbyTrees', component: () => import('pages/NearbyTrees') }
     ]
   },
 

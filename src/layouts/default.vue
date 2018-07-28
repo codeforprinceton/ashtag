@@ -47,9 +47,6 @@
         </q-btn>
       </q-toolbar>
     </q-layout-header>
-
-
-
     <q-page-container>
       <router-view />
     </q-page-container>
@@ -103,7 +100,7 @@ export default {
 
   main
     text-align center
-    margin-top 40px
+    margin-top 0px
 
   header
     margin 0

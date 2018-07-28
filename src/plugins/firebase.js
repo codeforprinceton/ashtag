@@ -25,8 +25,7 @@ export default ({ app, router, Vue }) => {
    Vue.prototype.$firebase = fireb
    Vue.prototype.$auth = auth
    Vue.prototype.$treesRef = treesRef
+   Vue.prototype.$profilesRef = profilesRef
    Vue.prototype.$storefb = storefb.ref()
    Vue.prototype.$db = db
-  // Vue.use(VueFire)
-
 }

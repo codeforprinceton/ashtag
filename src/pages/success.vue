@@ -13,8 +13,8 @@
           detail="You just got points for your tag."
           appear
           :actions="[
-          { label: 'Tag Another', icon: 'alarm', handler: () => { window.location = '#/tag' } },
-          { label: 'Verify Photos', icon: 'done', handler: () => { window.location = '#/hello' } }
+          { label: 'Tag Another', icon: 'alarm', handler: () => { this.$router.push('/tag') } },
+          { label: 'Verify Photos', icon: 'done', handler: () => { this.$router.push('/istree') } }
         ]"
           class="q-mt-md"
         >
@@ -30,7 +30,7 @@
 
         <!-- Marker -->
         <gmap-marker
-          title="Paris"
+          title="Ash tree"
           :position="userPosition" />
       </gmap-map>
     </div>

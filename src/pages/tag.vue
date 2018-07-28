@@ -19,12 +19,9 @@
             <div v-if="treePic">
               <q-btn @click="uploadPhotos" id="upload" round color="positive" icon="backup" style="cursor:pointer;" size="lg"/>
             </div>
-            <div v-if="tree">
+            <label v-else for="tree">
               <q-btn @click="triggerFileInput" round color="secondary" icon="add_a_photo" style="cursor:pointer;" size="lg"/>
-            </div>
-            <!--<label v-else for="tree">
-              <q-btn @click="triggerFileInput" round color="secondary" icon="add_a_photo" style="cursor:pointer;" size="lg"/>
-            </label>-->
+            </label>
           </q-page-sticky>
           <q-page-sticky v-if="treePic" position="bottom-left" :offset="[18, 18]">
             <q-btn @click="reset" round color="negative" icon="cancel" style="cursor:pointer;" size="lg"/>
@@ -33,9 +30,6 @@
         <div v-else>
           <q-page-sticky position="bottom-right" :offset="[18, 18]">
             <q-btn @click="reset" id="success" round color="positive" icon="check" style="cursor:pointer;" size="lg"/>
-          </q-page-sticky>
-          <q-page-sticky position="bottom-left" :offset="[18, 18]">
-            <q-btn @click="updateProfilePoints" id="filesaved" round color="positive" icon="thumb_up" style="cursor:pointer;" size="lg"/>
           </q-page-sticky>
         </div>
       </q-layout>
@@ -182,28 +176,13 @@
             Loading.hide()
             console.error(err.message)
           })
-        //this.updateProfilePoints
       },
       save (formData) {
         // upload data to the server
         let key
         let imageUrl
-       // let blob
         this.currentStatus = STATUS_SAVING
 
-        this.uploadaws(formData)
-          .then(x => {
-            Loading.hide()
-            //this.currentStatus = STATUS_SUCCESS
-            console.log("Loaded AWS - About to upload firebase")
-            // save data to database
-           })
-          .catch(err => {
-            Loading.hide()
-            console.log(error)
-            //  this.uploadError = err.response
-            this.currentStatus = STATUS_FAILED
-          })
         this.$treesRef.push(this.tree)
           .then((data) => {
             console.log("Pushed to firebase")
@@ -230,7 +209,6 @@
           })
           .then(downloadURL => {
             console.log(`Successfully uploaded file and got download link - ${downloadURL}`);
-            //return downloadURL;
             return this.$treesRef.child(key).update({imageUrl: downloadURL})
           })
           .then(() => {
@@ -245,16 +223,16 @@
            // this.uploadError = err.response
           })
       },
-      uploadaws(formData) {
-        const url = 'https://s3.amazonaws.com/ash-tree-photos'
-        return this.$axios.post(url, formData)
-          .then(function (response) {
-            console.log("Loaded AWS")  //response.data
-          })
-          .catch(function (error) {
-            console.log(error + Date.now())
-          })
-      },
+      // uploadaws(formData) {
+      //   const url = 'https://s3.amazonaws.com/ash-tree-photos'
+      //   return this.$axios.post(url, formData)
+      //     .then(function (response) {
+      //       console.log("Loaded AWS")  //response.data
+      //     })
+      //     .catch(function (error) {
+      //       console.log(error + Date.now())
+      //     })
+      // },
 
       triggerFileInput () {
         this.$refs.fileInput.click()
@@ -263,10 +241,17 @@
         console.log("about to go to success page")
         const p = Object.assign({}, this.profile)
         p.points = p.points + this.tagPoints
-        // add userPoints in firebase
-
-       // this.profilesRef.child(this.tree.user_id).update({points: p.points})
-       //   .then(this.$store.dispatch('setProfile', p))
+        // add userPoints in firebase then update our local store
+       this.$profilesRef.child(this.tree.user_id).update({points: p.points})
+         .then(() => {
+           this.$store.dispatch('setProfile', p)
+         })
+         .catch(err => {
+           console.log(error)
+           this.currentStatus = STATUS_FAILED
+           Loading.hide()
+         })
+        Loading.hide()
         console.log("going to success page")
         this.$router.push('/success')
       },
