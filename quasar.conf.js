@@ -66,7 +66,10 @@ module.exports = function (ctx) {
         'QTabPane',
         'QRouteTab',
         'QPageSticky',
-        'QAlert'
+        'QAlert',
+        'QCarousel',
+        'QCarouselSlide',
+        'QCarouselControl'
       ],
       directives: [
         'Ripple',

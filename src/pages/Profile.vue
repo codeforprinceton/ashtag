@@ -50,7 +50,7 @@ export default {
       // profilesRef: this.$root.$firebaseRefs.profiles,
       // verifiedSimple: this.$firebase.verifiedSimple,
       // verifiedSimpleRef: this.$root.$firebaseRefs.verifiedSimple,
-      taglist: [],
+      // taglist: this.trees.filter(tree => tree.user_id === this.userId),
       photo: '',
       userId: '',
       name: '',
@@ -68,6 +68,14 @@ export default {
     profile: {
       get () {
         return this.$store.state.profile
+      },
+      set () {
+        // something here
+      }
+    },
+    tagList: {
+      get () {
+        return this.trees.filter(tree => tree.user_id === this.userId)
       },
       set () {
         // something here
@@ -99,11 +107,6 @@ export default {
     }
   },
   methods: {
-    // tagList () {
-    //   this.tagList = this.trees.filter(tree => tree.user_id === this.userId)
-    //   this.$store.dispatch('setTaglist', tagList)
-    //   return tagList
-    // },
     removeFlagged () {
       // Removes flagged photos from tree_photos and photo references on the flagged list
       let i
@@ -151,9 +154,7 @@ export default {
       this.userId = this.$store.state.user.uid
       this.profile = this.$store.state.profile
     }
-    this.tagList = this.trees.filter(tree => tree.user_id === this.userId)
-    this.$store.dispatch('setTaglist', this.tagList)
-  }
+  },
 }
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
