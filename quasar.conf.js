@@ -93,38 +93,24 @@ module.exports = function (ctx) {
     pwa: {
       cacheExt: 'js,html,css,ttf,eot,otf,woff,woff2,json,svg,gif,jpg,jpeg,png,wav,ogg,webm,flac,aac,mp4,mp3',
       manifest: {
-        // name: 'Quasar App',
-        // short_name: 'Quasar-PWA',
-        // description: 'Best PWA App in town!',
-        display: 'standalone',
+        name: 'ashtag',
+        short_name: 'ASHTAG',
+        description: 'Crowdsourcing images and locations of ash trees for Emerald Ash Borer infestation tracking.',
         orientation: 'portrait',
-        background_color: '#ffffff',
-        theme_color: '#027be3',
+        start_url: "/?utm_source=homescreen",
+        display: "standalone",
+        background_color: "#000000",
+        theme_color: "#4DBA87",
         icons: [
           {
-            'src': 'statics/icons/icon-128x128.png',
-            'sizes': '128x128',
-            'type': 'image/png'
+            "src": "/statics/iconx/pwa-192x192.png",
+            "sizes": "192x192",
+            "type": "image/png"
           },
           {
-            'src': 'statics/icons/icon-192x192.png',
-            'sizes': '192x192',
-            'type': 'image/png'
-          },
-          {
-            'src': 'statics/icons/icon-256x256.png',
-            'sizes': '256x256',
-            'type': 'image/png'
-          },
-          {
-            'src': 'statics/icons/icon-384x384.png',
-            'sizes': '384x384',
-            'type': 'image/png'
-          },
-          {
-            'src': 'statics/icons/icon-512x512.png',
-            'sizes': '512x512',
-            'type': 'image/png'
+            "src": "/statics/iconx/pwa-512x512.png",
+            "sizes": "512x512",
+            "type": "image/png"
           }
         ]
       }
