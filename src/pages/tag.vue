@@ -180,7 +180,7 @@
       save (formData) {
         // upload data to the server
         let key
-        let imageUrl
+        let s3url
         this.currentStatus = STATUS_SAVING
 
         this.$treesRef.push(this.tree)
@@ -209,7 +209,7 @@
           })
           .then(downloadURL => {
             console.log(`Successfully uploaded file and got download link - ${downloadURL}`);
-            return this.$treesRef.child(key).update({imageUrl: downloadURL})
+            return this.$treesRef.child(key).update({s3url: downloadURL})
           })
           .then(() => {
             //this.updateProfilePoints

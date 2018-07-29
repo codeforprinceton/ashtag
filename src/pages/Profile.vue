@@ -119,7 +119,7 @@ export default {
       let newProfile = Object.assign({}, this.profile)
       newProfile.points = newProfile.points - this.spamToll
       this.$store.dispatch('setProfile', newProfile)
-      this.profilesRef.child(this.userId).update({points: newProfile.points})
+      this.$profilesRef.child(this.userId).update({points: newProfile.points})
         .then(this.removeFlagged())
     },
     photosFlaggedAlert () {

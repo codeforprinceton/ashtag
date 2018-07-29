@@ -5,8 +5,9 @@
       <p>Help us validate other users' images.</p>
       <p>Current score: {{ profile.points }}</p>
       <q-carousel ref="carousel">
-        <q-carousel-slide v-for="isTree in isTreeList" :key="isTree.datetime" >
+        <q-carousel-slide v-for="isTree in isTreeList" :key="isTree['.key']" >
           <img class="slideImg" :src="isTree.s3url"/>
+          <p style="color:white">{{ isTree['.key'] }}</p>
         </q-carousel-slide>
       </q-carousel>
       <p>Viewing {{ currentSlideIndex + 1 }} out of {{ isTreeList.length }}</p>
@@ -56,7 +57,7 @@ export default {
   },
   computed: {
     isTreeList () {
-      return this.trees.filter(tree => tree.user_id !== this.userId)
+      return this.trees.filter(tree => tree.user_id !== this.userId).reverse()
     },
     profile: {
       get () {
