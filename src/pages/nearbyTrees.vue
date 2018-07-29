@@ -109,20 +109,6 @@ export default {
     }
   },
   methods: {
-    /*submitTree () {
-      treeRef.push({ashtype: this.treetype, picsnapper: this.picsnapper, date: new Date().toISOString(), ss3url: this.photoUrl})
-        .then((data) => {
-          const key = data.key
-          geoFire.set(key, [this.testLat, this.testLng])
-        })
-        .then(() => {
-          console.log('key: ' + 'location has been added to geofire')
-        })
-        .catch((error) => {
-          console.log(error)
-        })*/
-    //},
-
     getLocations (radius, coords) {
       console.log('Coords ' + coords)
       this.hits.length = 0

@@ -22,7 +22,6 @@
             signInSuccessWithAuthResult: function (authResult, redirectUrl) {
               var user = authResult.user;
               var credential = authResult.credential;
-              console.log("user: " + user.displayName);
               this.sendToStore(user);
               return true;
             }.bind(this)
@@ -37,7 +36,6 @@
       },
       methods: {
           sendToStore(user) {
-            console.log(user)
             this.$store.dispatch('setUser', user); //|| false)
             this.$router.push('/hello')
           }

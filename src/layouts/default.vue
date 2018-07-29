@@ -71,9 +71,6 @@ export default {
         // this.$store.dispatch('logout')
         auth.logout()
         this.$store.dispatch('resetState', this.$store.state)
-        console.log("I logged out")
-        // this.$store.dispatch('resetState', this.$store.state)
-        // window.location.reload()
     },
     help() {
       this.$router.push('/identification')

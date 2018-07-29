@@ -1,27 +1,7 @@
 <template>
   <q-page padding>
     <div class="panel-body">
-      <!-- <transition
-        enter-active-class="animated bounceInLeft"
-        leave-active-class="animated bounceOutRight"
-        appear
-      >
-        <q-alert
-          color="secondary"
-          icon="tag_faces"
-          message="Hoot, there it is!"
-          detail="You just got points for your tag."
-          appear
-          :actions="[
-          { label: 'Tag Another', icon: 'alarm', handler: () => { this.$router.push('/tag') } },
-          { label: 'Verify Photos', icon: 'done', handler: () => { this.$router.push('/istree') } }
-        ]"
-          class="q-mt-md"
-        >
-        </q-alert>
-      </transition> -->
-
-      <h1>{{name}} has {{tagList.length}} tags and {{flaggedList.length}} flagged photos.</h1>
+      <h1>{{name}} has {{tagList.length}} tags and {{profile.flagged}} flagged photos.</h1>
       <p class="total">
         <span class="points">{{profile.points}}</span>
         <br/>
@@ -44,23 +24,14 @@ export default {
   },
   data: function () {
     return {
-      // trees: this.$firebase.trees,
-      // treesRef: this.$treesRef,
-      // profiles: this.$root.profiles,
-      // profilesRef: this.$root.$firebaseRefs.profiles,
-      // verifiedSimple: this.$firebase.verifiedSimple,
-      // verifiedSimpleRef: this.$root.$firebaseRefs.verifiedSimple,
-      // taglist: this.trees.filter(tree => tree.user_id === this.userId),
       photo: '',
       userId: '',
       name: '',
       email: '',
       user: {},
-      // simplePoints: this.$store.state.simplePoints,
-      // tagPoints: this.$store.state.tagPoints,
       flagToSpamThreshold: this.$store.state.flagToSpamThreshold,
       totalFlagged: 0,
-      flagged: [],
+      flagged: this.flaggedList,
       spamToll: 0
     }
   },
@@ -80,52 +51,13 @@ export default {
       set () {
         // something here
       }
-    },
-    flaggedList () {
-      const flagToSpamThreshold = this.flagToSpamThreshold
-      let tagList = this.tagList
-      function isFlagged (value) {
-        let vals = Object.values(value)
-        var counts = {}
-        vals.forEach(function (x) { counts[x] = (counts[x] || 0) + 1 })
-        if (counts.false > flagToSpamThreshold) {
-          // find flagged in tagList
-          let found = tagList.find(function (element) {
-            return element['.key'] === value['.key']
-          })
-          return found
-        }
-      }
-
-      var flaggedList = this.verifiedSimple.filter(isFlagged)
-      this.totalFlagged = flaggedList.length
-      this.flagged = flaggedList
-      if (this.totalFlagged) {
-        this.photosFlaggedAlert()
-      }
-      return flaggedList
     }
   },
   methods: {
-    removeFlagged () {
-      // Removes flagged photos from tree_photos and photo references on the flagged list
-      let i
-      for (i = 0; i < this.totalFlagged; i++) {
-        this.treesRef.child(this.flagged[i]['.key']).remove()
-          .then(this.verifiedSimpleRef.child(this.flagged[i]['.key']).remove())
-      }
-    },
-    reducePoints () {
-      let newProfile = Object.assign({}, this.profile)
-      newProfile.points = newProfile.points - this.spamToll
-      this.$store.dispatch('setProfile', newProfile)
-      this.$profilesRef.child(this.userId).update({points: newProfile.points})
-        .then(this.removeFlagged())
-    },
     photosFlaggedAlert () {
-      this.spamToll = this.totalFlagged * this.tagPoints
-      console.log(this.spamToll)
-      // let reducePoints = this.reducePoints
+      // Here we should let the user know how much the flagged photos have cost them.
+
+      // this.spamToll = this.profile.flagged * this.tagPoints
       // const alert = Alert.create({
       //   enter: 'bounceInDown',
       //   leave: 'bounceOutUp',

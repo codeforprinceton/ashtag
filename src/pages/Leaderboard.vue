@@ -19,11 +19,6 @@ export default {
   },
   computed: {
      topUsers() {
-      // let topUsers = this.profiles.orderByChild('points').limitToLast(10)
-      // let topUsers = db.ref('user_profiles').sort(function (a, b) { return (a.points > b.points) ? 1 : ((b.points > a.points) ? -1 : 0) })
-      //topUsers = topUsers.slice(-3)
-      //return topUsers.reverse()
-      console.log(this.leaders)
       return this.leaders.reverse()
     }
   }

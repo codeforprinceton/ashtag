@@ -35,18 +35,8 @@
     computed: {
       user() {
         return this.$store.getters.getUser
-        console.log("hello: ")
       }
     }
-    /*created() {
-      if (this.$store.state.user) {
-        this.user = this.$store.state.user
-        this.name = this.$store.state.user.displayName
-        this.email = this.$store.state.user.email
-       // this.photo = this.$store.state.user.photoURL
-        this.userId = this.$store.state.user.uid
-      }
-    }*/
   }
 </script>
 

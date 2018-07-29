@@ -22,8 +22,6 @@ const state = Object.assign({}, initialState)
 const mutations = {
   SET_USER (state, user) {
     state.user = user
-    console.log("Mutation User: " + user.displayName)
-    console.log("New user state: " + state.user.displayName)
   },
   SET_PROFILE (state, profile) {
     state.profile = profile
@@ -43,7 +41,6 @@ const mutations = {
 
 const actions = {
   setUser ({commit}, user) {
-    console.log("SetUser Action :" + user.displayName)
     commit('SET_USER', user)
     if (user) {
       fireb.database().ref('user_profiles').orderByChild('user_email')

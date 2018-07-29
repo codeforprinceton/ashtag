@@ -185,35 +185,26 @@
 
         this.$treesRef.push(this.tree)
           .then((data) => {
-            console.log("Pushed to firebase")
             key = data.key
-            console.log(key)
             geoFire.set(key, [this.tree.loc.lat, this.tree.loc.lng])
           })
-          .then(() => {
-              console.log('key: ' + key + ' location has been added to geofire')
-          })
+          // .then(() => {
+          //     console.log('key: ' + key + ' location has been added to geofire')
+          // })
           .catch((error) => {
             console.log(error)
             this.currentStatus = STATUS_FAILED
-            // this.uploadError = err.response
           })
 
         const storageRef = fireb.storage().ref('tree_photos/'+ this.img_name)
         const uploadTask = storageRef.put(this.blob)
-       /* uploadTask.on('state_changed', function progress(snapshot) {
-          console.log(snapshot.totalBytesTransferred); // progress of upload
-          })*/
         uploadTask.then((snapshot) => {
             return snapshot.ref.getDownloadURL();   // Will return a promise with the download link
           })
           .then(downloadURL => {
-            console.log(`Successfully uploaded file and got download link - ${downloadURL}`);
             return this.$treesRef.child(key).update({s3url: downloadURL})
           })
           .then(() => {
-            //this.updateProfilePoints
-            console.log("downloadURL added to tree_photo in database")
             this.currentStatus = STATUS_SUCCESS
             this.updateProfilePoints()
           })
@@ -223,22 +214,10 @@
            // this.uploadError = err.response
           })
       },
-      // uploadaws(formData) {
-      //   const url = 'https://s3.amazonaws.com/ash-tree-photos'
-      //   return this.$axios.post(url, formData)
-      //     .then(function (response) {
-      //       console.log("Loaded AWS")  //response.data
-      //     })
-      //     .catch(function (error) {
-      //       console.log(error + Date.now())
-      //     })
-      // },
-
       triggerFileInput () {
         this.$refs.fileInput.click()
       },
       updateProfilePoints () {
-        console.log("about to go to success page")
         const p = Object.assign({}, this.profile)
         p.points = p.points + this.tagPoints
         // add userPoints in firebase then update our local store
@@ -252,7 +231,6 @@
            Loading.hide()
          })
         Loading.hide()
-        console.log("going to success page")
         this.$router.push('/success')
       },
       getPreciseLocation () {

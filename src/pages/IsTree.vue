@@ -7,7 +7,6 @@
       <q-carousel ref="carousel">
         <q-carousel-slide v-for="isTree in isTreeList" :key="isTree['.key']" >
           <img class="slideImg" :src="isTree.s3url"/>
-          <p style="color:white">{{ isTree['.key'] }}</p>
         </q-carousel-slide>
       </q-carousel>
       <p>Viewing {{ currentSlideIndex + 1 }} out of {{ isTreeList.length }}</p>
@@ -46,12 +45,14 @@ export default {
       // profiles: this.$root.profiles,
       // profilesRef: this.$root.$firebaseRefs.profiles,
       // verifiedSimpleRef: this.$root.$firebaseRefs.verifiedSimple,
+      flagToSpamThreshold: this.$store.state.flagToSpamThreshold,
       photo: '',
       userId: '',
       name: '',
       email: '',
       user: {},
       simplePoints: this.$store.state.simplePoints,
+      tagPoints: this.$store.state.tagPoints,
       currentSlideIndex: 0
     }
   },
@@ -73,8 +74,8 @@ export default {
       return this.currentSlideIndex + 1 === this.isTreeList.length
     },
     valid (bool) {
-      // console.log(this.trees[this.currentSlideIndex]['.key'])
-      let treeRef = this.trees[this.currentSlideIndex]['.key']
+      let treeRef = this.isTreeList[this.currentSlideIndex]['.key']
+      let submittedBy = this.isTreeList[this.currentSlideIndex].user_id
       let userId = this.userId
       let verification = {}
       verification[userId] = bool
@@ -88,16 +89,46 @@ export default {
       // instead of logging to console after promise completes
       // should it attempt to remove points from user? or do that next time
       // the user logs in?
-
+      var _this = this
       db.ref('verified_simple').orderByKey()
-        .equalTo(this.trees[this.currentSlideIndex]['.key'])
+        .equalTo(this.isTreeList[this.currentSlideIndex]['.key'])
         .once('value')
         .then(function (snapshot) {
           var value = snapshot.val()
           if (value) {
-            // if it exists we can update a user to the list
-            value[treeRef][userId] = bool
-            db.ref('verified_simple').child(treeRef).set(value[treeRef]).then(console.log('verified!'))
+            // if it exists, we should first check how many false verifications it has against our threshold
+            var trueCount = 0
+            var falseCount = 0
+
+            for (var property in value[treeRef]) {
+              if (value[treeRef].hasOwnProperty(property)) {
+                if(value[treeRef][property] === true){
+                  trueCount++
+                } else {
+                  falseCount++
+                }
+              }
+            }
+
+            // and if it's spam let's reduce the points of the user who submitted it
+            // and then remove it from the tree_photos and verifiedSimple
+            if (falseCount > _this.flagToSpamThreshold){
+              db.ref('user_profiles').orderByKey()
+                .equalTo(submittedBy)
+                .once('value')
+                .then(function (snapshot) {
+                  var value = snapshot.val()
+                  var newFlagged = value[submittedBy].flagged + 1
+                  var newPoints = value[submittedBy].points - _this.tagPoints
+                  db.ref('user_profiles').child(submittedBy).update({flagged: newFlagged, points: newPoints})
+                    .then(db.ref('tree_photos').child(treeRef).remove())
+                    .then(db.ref('verified_simple').child(treeRef).remove())
+                })
+            } else {
+              // otherwise, we can update a user to the list
+              value[treeRef][userId] = bool
+              db.ref('verified_simple').child(treeRef).set(value[treeRef]).then(console.log('verified!'))
+            }
           }
           else {
             // if it doesn't exist, we need to create the node
